@@ -1,0 +1,50 @@
+---
+// AnyChat — landing page.
+// Product rules follow the KeyComposer and BeeRoll landings: no pricing, no trial wording,
+// one CTA ("Try Free") on the first screen, short copy, no testimonials until there are
+// real, attributable ones. Every product claim is checked against the app before it ships.
+import { TRY_URL, APP_PAGE_URL, SITE_URL } from '../consts';
+
+const title = 'AnyChat: One Chat for Every AI on Your Mac | MacPaw';
+const description = 'A native Mac chat for every AI backend: Setapp AI, your own API keys, local MLX models and Apple Intelligence. Free to try on Setapp.';
+const ogTitle = 'AnyChat — Every AI. One Mac app.';
+const ogImage = `${SITE_URL}/assets/og/landing.png`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={SITE_URL + '/'} />
+    <link rel="icon" href="/app-icon/AnyChat-512.png" type="image/png" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={ogTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={SITE_URL + '/'} />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="top">
+      <a class="brand" href="/"><img src="/app-icon/AnyChat-512.png" alt="" width="28" height="28" /> AnyChat</a>
+      <a class="cta" href={TRY_URL}>Try Free</a>
+    </header>
+
+    <main>
+      <section class="hero">
+        <h1>Every AI.<br />One Mac app.</h1>
+        <p class="sub">{description}</p>
+        <a class="cta cta-primary" href={TRY_URL}>Try Free</a>
+        <p class="fine"><a href={APP_PAGE_URL}>AnyChat on Setapp</a></p>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <p>© {new Date().getFullYear()} MacPaw</p>
+    </footer>
+
+    <script src="/main.js" is:inline></script>
+  </body>
+</html>
