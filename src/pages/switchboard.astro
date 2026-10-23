@@ -1,0 +1,209 @@
+---
+// AnyChat — landing page, "Switchboard" design (second version of the same page, at /switchboard).
+// Bento tiles on graph paper, one electric blue, mono captions, no gradients. The model switch is a literal
+// track in the hero: the active model slides along it and the reply re-streams in that model's voice.
+// Same content and rules as the main page (src/data.ts). noindex with a canonical to /, so the two never compete.
+import { TRY_URL, APP_PAGE_URL, SITE_URL } from '../consts';
+import { icons, arrow, plus, check } from '../icons';
+import { title, description, ogTitle, ogImage, heroVariants, heroPoints, steps, sources, stats, features, privacy, faqs, closingPrompts, dial } from '../data';
+
+// The track: the shared dial data (src/data.ts), five models answering the same question.
+const track = dial;
+const tagCls: Record<string, string> = { sparkles: 'blue', key: 'plain', cpu: 'green' };
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="noindex, follow" />
+<meta name="theme-color" content="#0E1116" />
+<link rel="icon" type="image/png" href="/app-icon/AnyChat-64.png" />
+<link rel="canonical" href={`${SITE_URL}/`} />
+<meta property="og:title" content={ogTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="/switchboard.css" />
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="AnyChat home"><img src="/app-icon/AnyChat-64.png" width="28" height="28" alt="" />AnyChat</a>
+    <nav class="nav-links" id="nav-links" aria-label="Page sections">
+      <a href="#how">How it works</a>
+      <a href="#models">Models</a>
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#setapp">Setapp</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn nav-menu-cta" href={TRY_URL}>Try Free <Fragment set:html={arrow} /></a>
+      <span class="nav-menu-note">Sign up with Setapp</span>
+    </nav>
+    <a class="btn btn-sm nav-cta" href={TRY_URL} tabindex="-1" aria-hidden="true" title="Sign up with Setapp">Try Free</a>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </div>
+  <div class="nav-backdrop" id="nav-backdrop"></div>
+</header>
+
+<main id="top" class="board">
+
+<!-- ─────────────────────────────  HERO BENTO  ──── -->
+<section class="grid hero" aria-label="Introduction">
+  <div class="cell c-hero">
+    <span class="lbl">AI chat for Mac · by MacPaw</span>
+    <h1><span id="hero-l1">Every model.</span><br /><em id="hero-l2">One chat.</em></h1>
+    <p class="sub" id="hero-sub">Setapp AI, your own keys, or models on your Mac. One transcript. Switch any time.</p>
+    <div class="cta-row">
+      <a class="btn" id="hero-cta" href={TRY_URL}>Try Free <Fragment set:html={arrow} /></a>
+      <span class="cta-note">Sign up with Setapp · <a href="#setapp">how that works</a></span>
+    </div>
+    <!-- The switch: active model slides along the track; the reply below re-streams. -->
+    <div class="switch" id="track" role="img" aria-label="The same question answered by five models in turn">
+      <p class="q"><span class="lbl">You</span>{track.question}</p>
+      <div class="rail">
+        {track.models.map((m, i) => <span class={`stop${i === 0 ? ' on' : ''}`} data-i={i}>{m.id}</span>)}
+        <span class="thumb" id="thumb"></span>
+      </div>
+      <p class="a"><span class="lbl"><b id="track-id">{track.models[0].id}</b> · <span id="track-where">{track.models[0].where}</span></span><span id="track-text">{track.models[0].text}</span></p>
+    </div>
+  </div>
+  <div class="cell c-points">
+    <span class="lbl">What you get</span>
+    <ul class="checks">{heroPoints.map((p) => <li><span class="ck"><Fragment set:html={check} /></span>{p}</li>)}</ul>
+  </div>
+  <div class="cell c-status"><i class="dot g"></i><span class="lbl light">Conversations stay on your Mac · no AnyChat server · no analytics</span></div>
+  {stats.map((s) => (
+    <div class="cell c-stat reveal">
+      <span class="lbl">{s.label}</span>
+      <span class="big" data-count={s.n} data-suffix={s.suffix ?? ''}>{s.n}{s.suffix}</span>
+    </div>
+  ))}
+  <script is:inline set:html={`window.track = ${JSON.stringify(track)};`} />
+</section>
+
+<!-- ─────────────────────────────  HOW IT WORKS  ──── -->
+<section class="section" id="how">
+  <div class="head reveal"><span class="lbl">01 · How it works</span><h2>One window, <em>every model</em></h2></div>
+  <div class="grid three">
+    {steps.map((s, i) => (
+      <div class="cell c-step reveal">
+        <span class="lbl">Step 0{i + 1}</span>
+        <h3>{s.title}</h3>
+        <p>{s.text}</p>
+        <img src={s.src} alt={s.alt} width="2000" height="1250" loading="lazy" decoding="async" />
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ─────────────────────────────  MODELS  ──── -->
+<section class="section" id="models">
+  <div class="head reveal"><span class="lbl">02 · Models</span><h2>Pick where <em>models run</em></h2><p>Cloud, on-device, or both. AnyChat treats them the same.</p></div>
+  <div class="grid three">
+    {sources.map((s) => (
+      <div class={`cell c-source reveal tag-${tagCls[s.icon]}`}>
+        <span class="lbl pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.icon]} />{s.tag}</span>
+        <h3>{s.title}</h3>
+        <p>{s.line}</p>
+        <ul class="chips">{s.models.map((m) => <li>{m}</li>)}</ul>
+        <span class="foot">{s.foot}</span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ─────────────────────────────  FEATURES  ──── -->
+<section class="section" id="features">
+  <div class="head reveal"><span class="lbl">03 · Features</span><h2>Built for people <em>who ask a lot</em></h2><p>Tap a tile for details.</p></div>
+  <div class="grid four">
+    {features.map((f, i) => (
+      <details class="cell c-feature reveal">
+        <summary>
+          <span class="lbl">{String(i + 1).padStart(2, '0')}</span>
+          <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[f.icon]} /></span>
+          <h3>{f.title}</h3>
+          <span class="line">{f.line}</span>
+          <span class="plus"><Fragment set:html={plus} /></span>
+        </summary>
+        <ul class="more">{f.more.map((m) => <li>{m}</li>)}</ul>
+      </details>
+    ))}
+  </div>
+</section>
+
+<!-- ─────────────────────────────  PRIVACY  ──── -->
+<section class="section" id="privacy">
+  <div class="grid two">
+    <div class="head reveal"><span class="lbl">04 · Privacy</span><h2>Your conversations <em>stay yours</em></h2><p>There is no AnyChat server. Words leave your Mac only for the model you pick, for that message.</p></div>
+    <div class="cell c-egress reveal" role="table" aria-label="Where your data goes">
+      <span class="lbl">egress</span>
+      {privacy.map((r) => (
+        <div class="e-row" role="row">
+          <span role="rowheader">{r.what}</span><i class="leader" aria-hidden="true"></i>
+          <span role="cell"><i class={`dot ${r.state}`}></i>{r.where}<small>{r.note}</small></span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  SETAPP  ──── -->
+<section class="section" id="setapp">
+  <div class="head reveal"><span class="lbl">05 · Setapp</span><h2><em>Try Free</em> goes through Setapp</h2><p>Setapp is the place you get handpicked Mac, iOS and web apps, including MacPaw’s products.</p></div>
+  <div class="grid three">
+    <div class="cell c-step reveal"><span class="lbl">Step 01</span><h3>Create a Setapp account</h3><p>That’s where the Try Free button lands. It takes a minute.</p><img class="contain" src="/assets/shots/setapp-signup-TEMP-keycomposer.webp" alt="Setapp sign-up page: continue with Google, Apple, or email" width="1600" height="1000" loading="lazy" decoding="async" /></div>
+    <div class="cell c-step reveal"><span class="lbl">Step 02</span><h3>Install Setapp on your Mac</h3><p>One small app that installs and updates everything else.</p><img class="contain" src="/assets/shots/setapp-home.webp" alt="The Setapp app on a Mac, showing its library of apps" width="1600" height="973" loading="lazy" decoding="async" /></div>
+    <div class="cell c-step reveal"><span class="lbl">Step 03</span><h3>Open AnyChat</h3><p>It’s in your Setapp library, and the same account holds your AI coins.</p><img class="contain" src="/assets/shots/setapp-app-TEMP-keycomposer.webp" alt="An app’s page inside the Setapp app, with its Install button" width="1600" height="1029" loading="lazy" decoding="async" /></div>
+  </div>
+  <p class="foot-note reveal">Already on Setapp? Search for AnyChat in the Setapp app, or open <a href={APP_PAGE_URL} target="_blank" rel="noopener">its Setapp page</a>. <a href="https://setapp.com" target="_blank" rel="noopener">More about Setapp</a>.</p>
+</section>
+
+<!-- ─────────────────────────────  FAQ  ──── -->
+<section class="section" id="faq">
+  <div class="grid two">
+    <div class="head reveal"><span class="lbl">06 · FAQ</span><h2>Answers before <em>your first question</em></h2></div>
+    <div class="cell c-faq reveal">
+      {faqs.map((f, i) => (
+        <details class="faq-item">
+          <summary><span class="lbl">{String(i + 1).padStart(2, '0')}</span>{f.q}<span class="plus"><Fragment set:html={plus} /></span></summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  CLOSING  ──── -->
+<section class="section closing">
+  <div class="cell c-closing reveal">
+    <p class="prompt" aria-hidden="true"><span class="lbl">You</span><span class="typed" id="closing-typed" data-prompts={JSON.stringify(closingPrompts)}>{closingPrompts[0]}</span></p>
+    <h2>Every model you use, <em>in one Mac app</em></h2>
+    <a class="btn btn-lg" href={TRY_URL}>Try Free <Fragment set:html={arrow} /></a>
+    <p class="cta-note">Sign up with Setapp · No API keys needed · macOS 15 or later</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a class="brand" href="#top"><img src="/app-icon/AnyChat-64.png" width="22" height="22" alt="" />AnyChat</a>
+    <span class="lbl">© 2026 MacPaw Way Ltd.</span>
+    <nav class="footer-links" aria-label="Legal and help">
+      <a href="https://macpaw.com/legal/policy" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="https://macpaw.com/legal/ai-apps-terms-of-service" target="_blank" rel="noopener">Terms of Service</a>
+      <a href="https://macpawai.zendesk.com/hc/en-us" target="_blank" rel="noopener">Help</a>
+    </nav>
+  </div>
+</footer>
+
+<script is:inline set:html={`window.heroVariants = ${JSON.stringify(heroVariants)};`} />
+<script is:inline src="/main.js"></script>
+</body>
+</html>

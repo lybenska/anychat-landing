@@ -1,50 +1,255 @@
 ---
-// AnyChat — landing page.
-// Product rules follow the KeyComposer and BeeRoll landings: no pricing, no trial wording,
-// one CTA ("Try Free") on the first screen, short copy, no testimonials until there are
-// real, attributable ones. Every product claim is checked against the app before it ships.
+// AnyChat — landing page, "Transcript" design.
+// The whole page is a conversation: every section heading is the visitor's question, the content is the reply,
+// each reply signed by who answers (AnyChat, or one of the three places models run). Light grey, white cards,
+// black user bubbles, pastel tags: pink for Setapp AI+, amber for your own key, blue for on your Mac.
+// Product rules as on the other MacPaw landings: one CTA ("Try Free") on the first screen, no pricing, no testimonials
+// until there are real ones. Every claim is checked against the app (README › Keeping claims true).
 import { TRY_URL, APP_PAGE_URL, SITE_URL } from '../consts';
+import { icons, arrow, up, plus, check } from '../icons';
+import { title, description, ogTitle, ogImage, heroVariants, heroPoints, steps, sources, stats, features, privacy, faqs, closingPrompts } from '../data';
 
-const title = 'AnyChat: One Chat for Every AI on Your Mac | MacPaw';
-const description = 'A native Mac chat for every AI backend: Setapp AI, your own API keys, local MLX models and Apple Intelligence. Free to try on Setapp.';
-const ogTitle = 'AnyChat — Every AI. One Mac app.';
-const ogImage = `${SITE_URL}/assets/og/landing.png`;
+const senders: Record<string, { cls: string; name: string }> = {
+  sparkles: { cls: 'pink', name: 'Setapp AI+' },
+  key: { cls: 'amber', name: 'Your own key' },
+  cpu: { cls: 'blue', name: 'On your Mac' },
+};
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+};
+const appJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'SoftwareApplication',
+  name: 'AnyChat',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'macOS 15',
+  description,
+  url: `${SITE_URL}/`,
+  author: { '@type': 'Organization', name: 'MacPaw', url: 'https://macpaw.com' },
+};
 ---
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={SITE_URL + '/'} />
-    <link rel="icon" href="/app-icon/AnyChat-512.png" type="image/png" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content={ogTitle} />
-    <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
-    <meta property="og:url" content={SITE_URL + '/'} />
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <header class="top">
-      <a class="brand" href="/"><img src="/app-icon/AnyChat-512.png" alt="" width="28" height="28" /> AnyChat</a>
-      <a class="cta" href={TRY_URL}>Try Free</a>
-    </header>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="theme-color" content="#EEF0F4" />
+<link rel="icon" type="image/png" href="/app-icon/AnyChat-64.png" />
+<link rel="apple-touch-icon" href="/app-icon/AnyChat-512.png" />
+<link rel="canonical" href={`${SITE_URL}/`} />
+<meta property="og:site_name" content="AnyChat" />
+<meta property="og:title" content={ogTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content="website" />
+<meta property="og:url" content={`${SITE_URL}/`} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content="@macpaw" />
+<meta name="twitter:title" content={ogTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<script type="application/ld+json" set:html={JSON.stringify(appJsonLd)} />
+<script type="application/ld+json" set:html={JSON.stringify(faqJsonLd)} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="/transcript.css" />
+</head>
+<body>
 
-    <main>
-      <section class="hero">
-        <h1>Every AI.<br />One Mac app.</h1>
-        <p class="sub">{description}</p>
-        <a class="cta cta-primary" href={TRY_URL}>Try Free</a>
-        <p class="fine"><a href={APP_PAGE_URL}>AnyChat on Setapp</a></p>
-      </section>
-    </main>
+<!-- ─────────────────────────────  NAV  ──── -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="AnyChat home"><img src="/app-icon/AnyChat-64.png" width="28" height="28" alt="" />AnyChat</a>
+    <nav class="nav-links" id="nav-links" aria-label="Page sections">
+      <a href="#how">How it works</a>
+      <a href="#models">Models</a>
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#setapp">Setapp</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn nav-menu-cta" href={TRY_URL}>Try Free <Fragment set:html={arrow} /></a>
+      <span class="nav-menu-note">Sign up with Setapp</span>
+    </nav>
+    <a class="btn btn-sm nav-cta" href={TRY_URL} tabindex="-1" aria-hidden="true" title="Sign up with Setapp">Try Free</a>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </div>
+  <div class="nav-backdrop" id="nav-backdrop"></div>
+</header>
 
-    <footer class="foot">
-      <p>© {new Date().getFullYear()} MacPaw</p>
-    </footer>
+<main id="top" class="thread">
 
-    <script src="/main.js" is:inline></script>
-  </body>
+<!-- ─────────────────────────────  HERO  ──── -->
+<section class="turn hero" aria-label="Introduction">
+  <p class="you"><span id="hero-q" data-text="What is AnyChat?">What is AnyChat?</span></p>
+  <div class="reply reveal">
+    <p class="who"><i class="av black"></i><b>AnyChat</b><span>by MacPaw</span></p>
+    <h1><span id="hero-l1">Every model you use,</span><br /><span id="hero-l2">in one Mac app.</span></h1>
+    <p class="lede" id="hero-sub">Frontier models included with Setapp, your own API keys, or models that run on your Mac. Switch mid-conversation without losing a word.</p>
+    <ul class="tags">
+      <li class="tag pink">Setapp AI+ · included</li>
+      <li class="tag amber">Your own key</li>
+      <li class="tag blue">On your Mac · offline</li>
+    </ul>
+    <div class="cta-row">
+      <a class="btn" id="hero-cta" href={TRY_URL}>Try Free <Fragment set:html={arrow} /></a>
+      <p class="cta-note">Sign up with Setapp · <a href="#setapp">How that works</a></p>
+    </div>
+    <ul class="checks">
+      {heroPoints.map((p) => <li><span class="ck"><Fragment set:html={check} /></span>{p}</li>)}
+    </ul>
+  </div>
+  <p class="note reveal">Made by <b>MacPaw</b>, the team behind CleanMyMac and Setapp · No API keys needed · Conversations stay on your Mac</p>
+</section>
+
+<!-- ─────────────────────────────  HOW IT WORKS  ──── -->
+<section class="turn" id="how">
+  <p class="you reveal">How does it work?</p>
+  {steps.map((s, i) => (
+    <div class="reply reveal">
+      <p class="who"><i class="av black"></i><b>AnyChat</b><span>step {i + 1} of {steps.length}</span></p>
+      <h2>{s.title}</h2>
+      <p class="lede">{s.text}</p>
+      <img class="shot" src={s.src} alt={s.alt} width="2000" height="1250" loading={i === 0 ? 'eager' : 'lazy'} decoding="async" />
+    </div>
+  ))}
+</section>
+
+<!-- ─────────────────────────────  STATS  ──── -->
+<section class="turn">
+  <p class="you reveal">How many models are we talking about?</p>
+  <div class="reply reveal">
+    <p class="who"><i class="av black"></i><b>AnyChat</b></p>
+    <dl class="stats">
+      {stats.map((s) => (
+        <div class="stat">
+          <dt class="stat-n" data-count={s.n} data-suffix={s.suffix ?? ''}>{s.n}{s.suffix}</dt>
+          <dd>{s.label}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  MODELS  ──── -->
+<section class="turn" id="models">
+  <p class="you reveal">Where do the models run?</p>
+  {sources.map((s) => (
+    <div class={`reply reveal from-${senders[s.icon].cls}`}>
+      <p class="who"><i class={`av ${senders[s.icon].cls}`}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[s.icon]} /></i><b>{senders[s.icon].name}</b><span>{s.tag}</span></p>
+      <h2>{s.title}</h2>
+      <p class="lede">{s.line}</p>
+      <ul class="chips">{s.models.map((m) => <li>{m}</li>)}</ul>
+      <p class="foot">{s.foot}</p>
+    </div>
+  ))}
+</section>
+
+<!-- ─────────────────────────────  FEATURES  ──── -->
+<section class="turn" id="features">
+  <p class="you reveal">What else can it do?</p>
+  <div class="reply reveal wide">
+    <p class="who"><i class="av black"></i><b>AnyChat</b><span>tap a row for details</span></p>
+    <div class="feature-grid">
+      {features.map((f) => (
+        <details class="feature">
+          <summary>
+            <span class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[f.icon]} /></span>
+            <span class="feature-text"><h3>{f.title}</h3><span class="line">{f.line}</span></span>
+            <span class="plus"><Fragment set:html={plus} /></span>
+          </summary>
+          <ul class="more">{f.more.map((m) => <li>{m}</li>)}</ul>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  PRIVACY  ──── -->
+<section class="turn" id="privacy">
+  <p class="you reveal">Where do my words go?</p>
+  <div class="reply reveal from-blue">
+    <p class="who"><i class="av blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.cpu} /></i><b>On your Mac</b></p>
+    <h2>Your conversations stay yours.</h2>
+    <p class="lede">There is no AnyChat server. Words leave your Mac only for the model you pick, for that message.</p>
+    <div class="egress" role="table" aria-label="Where your data goes">
+      {privacy.map((r) => (
+        <div class="e-row" role="row">
+          <span role="rowheader">{r.what}</span>
+          <span role="cell"><i class={`dot ${r.state}`}></i><b>{r.where}</b><small>{r.note}</small></span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  SETAPP  ──── -->
+<!-- Pictures: Setapp's official app screenshot; the sign-up and in-app pictures are KeyComposer's and stand in until AnyChat's listing exists. -->
+<section class="turn" id="setapp">
+  <p class="you reveal">Why does Try Free open Setapp?</p>
+  <div class="reply reveal wide">
+    <p class="who"><i class="av pink"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons.sparkles} /></i><b>Setapp AI+</b></p>
+    <h2>AnyChat ships through Setapp.</h2>
+    <p class="lede">Setapp is the place you get handpicked Mac, iOS and web apps, including MacPaw’s products. Three steps, then it’s one click away.</p>
+    <ol class="setapp-steps">
+      <li><img src="/assets/shots/setapp-signup-TEMP-keycomposer.webp" alt="Setapp sign-up page: continue with Google, Apple, or email" width="1600" height="1000" loading="lazy" decoding="async" /><h3><span>1</span>Create a Setapp account</h3><p>That’s where the Try Free button lands. It takes a minute.</p></li>
+      <li><img src="/assets/shots/setapp-home.webp" alt="The Setapp app on a Mac, showing its library of apps" width="1600" height="973" loading="lazy" decoding="async" /><h3><span>2</span>Install Setapp on your Mac</h3><p>One small app that installs and updates everything else.</p></li>
+      <li><img src="/assets/shots/setapp-app-TEMP-keycomposer.webp" alt="An app’s page inside the Setapp app, with its Install button" width="1600" height="1029" loading="lazy" decoding="async" /><h3><span>3</span>Open AnyChat</h3><p>It’s in your Setapp library, and the same account holds your AI coins.</p></li>
+    </ol>
+    <p class="foot">Already on Setapp? Search for AnyChat in the Setapp app, or open <a href={APP_PAGE_URL} target="_blank" rel="noopener">its Setapp page</a>. <a href="https://setapp.com" target="_blank" rel="noopener">More about Setapp</a>.</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  FAQ  ──── -->
+<section class="turn" id="faq">
+  <p class="you reveal">Anything else I should know?</p>
+  <div class="reply reveal wide">
+    <p class="who"><i class="av black"></i><b>AnyChat</b><span>{faqs.length} common questions</span></p>
+    <div class="faq-list">
+      {faqs.map((f) => (
+        <details class="faq-item">
+          <summary>{f.q}<span class="plus"><Fragment set:html={plus} /></span></summary>
+          <p>{f.a}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────  CLOSING  ──── -->
+<section class="turn closing" aria-label="Get AnyChat">
+  <p class="you typing reveal"><span class="typed" id="closing-typed" data-prompts={JSON.stringify(closingPrompts)}>{closingPrompts[0]}</span></p>
+  <div class="reply reveal center">
+    <p class="who"><i class="av black"></i><b>AnyChat</b></p>
+    <h2>Ask anything. Pick any model.</h2>
+    <a class="btn btn-lg" href={TRY_URL}>Try Free <Fragment set:html={arrow} /></a>
+    <p class="cta-note">Sign up with Setapp · No API keys needed · macOS 15 or later</p>
+  </div>
+  <div class="composer reveal" aria-hidden="true"><span>Message AnyChat…</span><span class="send"><Fragment set:html={up} /></span></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a class="brand" href="#top"><img src="/app-icon/AnyChat-64.png" width="22" height="22" alt="" />AnyChat</a>
+    <span>© 2026 MacPaw Way Ltd.</span>
+    <nav class="footer-links" aria-label="Legal and help">
+      <a href="https://macpaw.com/legal/policy" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="https://macpaw.com/legal/ai-apps-terms-of-service" target="_blank" rel="noopener">Terms of Service</a>
+      <a href="https://macpawai.zendesk.com/hc/en-us" target="_blank" rel="noopener">Help</a>
+    </nav>
+  </div>
+</footer>
+
+<script is:inline set:html={`window.heroVariants = ${JSON.stringify(heroVariants)};`} />
+<script is:inline src="/main.js"></script>
+</body>
 </html>

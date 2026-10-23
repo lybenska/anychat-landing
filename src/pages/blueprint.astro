@@ -1,0 +1,410 @@
+---
+// AnyChat — landing page, "Blueprint" design (/blueprint). After the precision-instrument look of metic.studio:
+// warm paper, one magenta signal (the app's Delight accent), Bricolage Grotesque display, Geist text, Geist Mono
+// captions with coordinates, a ruler down the left edge. The hero object is a model dial you can turn; the
+// how-it-works is a pinned build that assembles one AnyChat exchange on scroll, with a progress readout.
+// Same content and rules as the other pages (src/data.ts). noindex with a canonical to /.
+import { TRY_URL, APP_PAGE_URL, SITE_URL } from '../consts';
+import { icons, arrow, plus } from '../icons';
+import { title, description, ogTitle, ogImage, heroVariants, sources, stats, features, privacy, faqs, dial, build, principles, inside } from '../data';
+
+// The model drum: five names on a cylinder; the colour class says where each model runs.
+const whereCls = (w: string) => (/mac/i.test(w) ? 'mac' : /key/i.test(w) ? 'key' : 'setapp');
+
+// Build stage: a 1000 × 562 coordinate space, laid out in percentages so it scales with its box.
+const pos = (x: number, y: number, w: number, h: number) =>
+  `left:${x / 10}%;top:${(y / 5.62).toFixed(2)}%;width:${w / 10}%;height:${(h / 5.62).toFixed(2)}%`;
+const routes = [
+  { x: 290, label: 'Setapp AI+', sub: 'TLS · Setapp gateway', on: true },
+  { x: 515, label: 'Your provider', sub: 'TLS · your own key', on: false },
+  { x: 740, label: 'Your Mac', sub: '0 B leaves', on: false },
+];
+const sectionNames = { top: 'Intro', build: 'The build', models: 'Models', inside: 'Inside', features: 'Features', privacy: 'Privacy', setapp: 'Setapp', faq: 'FAQ', move: 'Your move' };
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="noindex, follow" />
+<meta name="theme-color" content="#F4F4F1" />
+<link rel="icon" type="image/png" href="/app-icon/AnyChat-64.png" />
+<link rel="canonical" href={`${SITE_URL}/`} />
+<meta property="og:title" content={ogTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Caveat:wght@600&display=swap" />
+<link rel="stylesheet" href="/blueprint.css" />
+<script is:inline>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+
+<!-- Instrument chrome: ruler (left), section indicator (right), cursor readout. Decorative. -->
+<div class="ruler" id="ruler" aria-hidden="true"><div class="ruler-inner" id="ruler-inner"></div></div>
+<div class="sidedot" id="sidedot" aria-hidden="true"><span class="sidedot-track"></span><span class="sidedot-mark" id="sidedot-mark"><span id="sidedot-label">Intro</span></span></div>
+<div class="reticle" id="reticle" aria-hidden="true"><span class="reticle-ring"></span><span class="reticle-xy" id="reticle-xy">x 0 · y 0</span></div>
+
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="AnyChat home"><img src="/app-icon/AnyChat-64.png" width="26" height="26" alt="" />AnyChat</a>
+    <nav class="nav-links" id="nav-links" aria-label="Page sections">
+      <a href="#build">How it works</a>
+      <a href="#models">Models</a>
+      <a href="#features">Features</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn nav-menu-cta" href={TRY_URL}>Try Free <span class="btn-dot"><Fragment set:html={arrow} /></span></a>
+      <span class="nav-menu-note">Sign up with Setapp</span>
+    </nav>
+    <a class="btn btn-sm nav-cta" href={TRY_URL} tabindex="-1" aria-hidden="true" title="Sign up with Setapp">Try Free</a>
+    <button class="nav-burger" id="nav-burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links"><span></span><span></span></button>
+  </div>
+  <div class="nav-backdrop" id="nav-backdrop"></div>
+</header>
+
+<main>
+
+<!-- ─────────────────────────────  HERO  ──── -->
+<!-- Left: what it is, in plain words, and the three ways to reach a model. Right: a real-looking AnyChat window
+     with the model drum docked in its corner; rolling the drum switches the model in the composer and the reply
+     is answered again, right there in the window. -->
+<section class="hero" id="top" data-name={sectionNames.top}>
+  <div class="hero-copy">
+    <p class="eyebrow mono reveal"><i></i>AI chat app for Mac · by MacPaw</p>
+    <h1 class="hero-h1 reveal"><span id="hero-l1">Every AI model,</span><br /><span id="hero-l2">in one Mac chat.</span></h1>
+    <p class="hero-sub reveal" id="hero-sub">Claude, GPT, Gemini and more, included with Setapp. No API keys to paste. Or use your own keys, or models that run on your Mac.</p>
+    <ul class="ways reveal" aria-label="Three ways to reach a model">
+      <li class="w-setapp"><i></i><b>Included with Setapp</b><span>no keys needed</span></li>
+      <li class="w-key"><i></i><b>Your own API keys</b><span>OpenAI, Anthropic, Gemini…</span></li>
+      <li class="w-mac"><i></i><b>On your Mac</b><span>private, works offline</span></li>
+    </ul>
+    <div class="cta-row reveal">
+      <a class="btn" id="hero-cta" href={TRY_URL}>Try Free <span class="btn-dot"><Fragment set:html={arrow} /></span></a>
+      <a class="btn btn-ghost" href="#build">See how it works <span class="btn-dot"><Fragment set:html={arrow} /></span></a>
+    </div>
+    <p class="cta-note mono reveal">Sign up with Setapp · macOS 15 or later</p>
+  </div>
+
+  <!-- One device: the AnyChat window with a model module docked on its right edge. Same material, one shadow,
+       one title strip; the module's "where it runs" readout matches the model chip in the composer. -->
+  <div class="hero-stage reveal">
+    <div class="device">
+      <div class="win" aria-hidden="true">
+        <div class="win-bar"><span class="tl"></span><span class="tl"></span><span class="tl"></span><span class="win-title">AnyChat</span></div>
+        <div class="win-body">
+          <aside class="win-side">
+            <p class="ws-h">Chats</p>
+            <p class="ws-r on">Rewrite this in a friendl…</p><p class="ws-r">Q3 board review</p><p class="ws-r">Lisbon, three days</p><p class="ws-r">What does this error…</p>
+          </aside>
+          <div class="win-main">
+            <p class="wm-user">{dial.question}</p>
+            <div class="wm-reply" id="wm-reply">
+              <p class="wm-who mono">via <b id="ro-id">{dial.models[0].id}</b> · <span id="ro-where">{dial.models[0].where}</span></p>
+              <p id="ro-text">{dial.models[0].text}</p>
+            </div>
+            <div class="wm-five" id="wm-five" aria-live="polite">
+              <p class="wf-h mono">Same question, {dial.models.length} answers</p>
+              {dial.models.map((m, i) => (
+                <p class={`wf-r w-${/mac/i.test(m.where) ? 'mac' : /key/i.test(m.where) ? 'key' : 'setapp'}`} data-i={i}><i></i><b class="mono">{m.id}</b><span>{m.text}</span></p>
+              ))}
+            </div>
+            <div class="wm-composer">
+              <span class="wm-field">Message AnyChat…</span>
+              <span class="wm-model" id="win-model" data-where="setapp"><i></i><span class="wm-id">{dial.models[0].id}</span><span>▾</span></span>
+              <span class="wm-send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6" /></svg></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="mod">
+        <p class="mod-h mono">Model<span class="mod-auto" id="mod-auto"><i></i>auto</span></p>
+        <div class="drum" id="dial" role="slider" tabindex="0" aria-label="Model" aria-valuemin="0" aria-valuemax={dial.models.length - 1} aria-valuenow="0" aria-valuetext={`${dial.models[0].id}, ${dial.models[0].where}`}>
+          <div class="drum-win">
+            <ul class="dr-list">
+              {dial.models.map((m, i) => <li class={`dr-i w-${whereCls(m.where)}${i === 0 ? ' on' : ''}`} data-i={i}>{m.short}</li>)}
+            </ul>
+            <span class="drum-mark" aria-hidden="true"></span>
+          </div>
+          <span class="thumb" id="drum-thumb" aria-hidden="true"></span>
+        </div>
+        <p class="mod-where mono" id="mod-where" data-where={whereCls(dial.models[0].where)}><i></i><span>{dial.models[0].where}</span></p>
+      </div>
+    </div>
+    <p class="hand" aria-hidden="true"><span id="hand-text">Or roll it yourself</span><svg viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 34C20 32 36 22 46 6" /><path d="M38 7l8-2 1 9" /></svg></p>
+  </div>
+  <script is:inline set:html={`window.dial = ${JSON.stringify(dial)};`} />
+</section>
+
+<!-- ─────────────────────────────  THE BUILD (how it works)  ──── -->
+<section class="build" id="build" data-name={sectionNames.build} style={`--steps:${build.length}`}>
+  <div class="build-pin">
+    <div class="build-head">
+      <p class="mono dim">The build<br /><span class="ink">From a question to an answer.</span></p>
+      <p class="pct-wrap"><span class="mono dim">Progress</span><span class="pct" id="pct">000<small>%</small></span></p>
+    </div>
+
+    <div class="bp" id="bp" aria-hidden="true">
+      <svg class="bp-lines" viewBox="0 0 1000 562" preserveAspectRatio="none">
+        <!-- column guides over the main area -->
+        <g class="g-cols">{Array.from({ length: 12 }, (_, i) => <rect x={290 + i * 53.3} y="54" width="44" height="488" />)}</g>
+        <!-- window -->
+        <rect class="g-win" x="40" y="20" width="920" height="522" rx="12" />
+        <line class="g-win" x1="40" y1="54" x2="960" y2="54" />
+        <line class="g-side" x1="250" y1="54" x2="250" y2="542" />
+        <!-- step 1 guides: the composer's top edge and the content's left edge -->
+        <line class="g-red s1g" x1="0" y1="462" x2="1000" y2="462" />
+        <line class="g-red s1g" x1="290" y1="0" x2="290" y2="562" />
+        <line class="g-red g-dash s1g" x1="920" y1="0" x2="920" y2="562" />
+        <!-- step 3 routes, from the model pill to each destination -->
+        {routes.map((r) => <path class={`g-route${r.on ? ' on' : ''}`} d={`M840 424 C 840 300, ${r.x + 90} 300, ${r.x + 90} 162`} />)}
+      </svg>
+
+      <span class="dots"><i></i><i></i><i></i></span>
+      <span class="coord s1g" style="left:29.4%;top:79.4%">x 290 · y 462</span>
+      <span class="coord s1g" style="left:76%;top:2%">x 920</span>
+      <span class="dim-v s1g" style={pos(266, 462, 14, 54)}><span>54</span></span>
+
+      <!-- composer -->
+      <div class="el composer" style={pos(290, 462, 630, 54)}><span class="typed" id="bp-typed"></span><span class="caret"></span><span class="send"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6" /></svg></span></div>
+
+      <!-- step 2: model pill + picker -->
+      <div class="el pill" style={pos(740, 426, 180, 28)}><i></i>{dial.models[0].id}<span>▾</span></div>
+      <div class="el picker" style={pos(700, 196, 220, 222)}>
+        <p class="pk-h">Setapp AI+</p><p class="pk-r on">claude-opus-4-6</p><p class="pk-r">gpt-5</p>
+        <p class="pk-h">Your key</p><p class="pk-r">gemini-2.5-pro</p>
+        <p class="pk-h">On your Mac</p><p class="pk-r">llama-3.2-3b</p><p class="pk-r">Apple Intelligence</p>
+      </div>
+      <span class="note-r el-note2" style="left:52%;top:36%">⌘E · explore models</span>
+
+      <!-- step 3: destinations -->
+      {routes.map((r) => (
+        <div class={`el dest${r.on ? ' on' : ''}`} style={pos(r.x, 96, 180, 64)}><b>{r.label}</b><span>{r.sub}</span></div>
+      ))}
+
+      <!-- step 4: the exchange -->
+      <div class="el bub-you" style={pos(600, 82, 320, 40)}>{dial.question}</div>
+      <div class="el bub-ai" style={pos(290, 138, 520, 120)}><span class="who">{dial.models[0].id} · Setapp AI+</span><span id="bp-answer"></span></div>
+      <span class="note-r el-note4" style="left:29%;top:47.5%">streamed · ~34 tokens</span>
+
+      <!-- step 5: second opinion -->
+      <div class="el cmp" style={pos(290, 138, 630, 268)}>
+        <p class="cmp-h">Same question, two models</p>
+        <div class="cmp-c"><span class="who blue">On your Mac · free · offline</span><p>{dial.models[3].text}</p><span class="act">Keep this one</span></div>
+        <div class="cmp-c on"><span class="who">Cloud · included with Setapp</span><p>{dial.models[0].text}</p><span class="act">Switch to this one</span></div>
+      </div>
+
+      <!-- step 6: history on this Mac -->
+      <div class="el side" style={pos(40, 54, 210, 488)}>
+        <p class="sd-h">Chats</p>
+        <p class="sd-r on">Rewrite this in a friendlier…</p><p class="sd-r">Q3 board review</p><p class="sd-r">Lisbon, three days</p><p class="sd-r">What does this error mean?</p><p class="sd-r">Contract comparison</p>
+      </div>
+      <div class="el stamp" style={pos(52, 352, 236, 128)}><b>Stored on this Mac</b><span>Application Support · local</span><span>Keys · macOS Keychain</span><span class="red">0 B to AnyChat servers</span></div>
+      <span class="done">Done. That’s AnyChat.</span>
+    </div>
+
+    <div class="build-foot">
+      <div class="step-copy" aria-live="polite">
+        <p class="mono"><span class="red" id="step-n">01</span> <span class="rule"></span> {String(build.length).padStart(2, '0')}</p>
+        <h2 id="step-title">{build[0].title}</h2>
+        <p id="step-text">{build[0].text}</p>
+      </div>
+      <a class="skip mono" href="#principles">Skip the build ↓</a>
+    </div>
+  </div>
+  <!-- The same steps as plain text, for screen readers and no-JS. -->
+  <ol class="sr-only">{build.map((b) => <li><strong>{b.title}</strong> {b.text}</li>)}</ol>
+  <script is:inline set:html={`window.buildSteps = ${JSON.stringify(build)}; window.dialFirst = ${JSON.stringify(dial.models[0].text)};`} />
+</section>
+
+<!-- ─────────────────────────────  PRINCIPLES + STATEMENT  ──── -->
+<section class="sec" id="principles">
+  <div class="principles">
+    {principles.map((p) => <div class="reveal"><h3>{p.title}</h3><p>{p.text}</p></div>)}
+  </div>
+  <p class="statement reveal">Every model you use.<br />One window.<br />On your Mac.</p>
+</section>
+
+<!-- ─────────────────────────────  STATS  ──── -->
+<section class="sec stats">
+  {stats.map((s) => (
+    <div class="stat reveal">
+      <span class="mono dim">{s.label}</span>
+      <span class="stat-n" data-count={s.n} data-suffix={s.suffix ?? ''}>{s.n}{s.suffix}</span>
+    </div>
+  ))}
+</section>
+
+<!-- ─────────────────────────────  MODELS  ──── -->
+<section class="sec" id="models" data-name={sectionNames.models}>
+  <div class="sec-head reveal"><h2>Where models run.</h2><p>Cloud, on-device, or both. AnyChat treats them the same.</p></div>
+  <div class="cols3">
+    {sources.map((s, i) => (
+      <div class="col reveal">
+        <p class="mono"><span class="red">0{i + 1}</span> / {s.tag}</p>
+        <h3>{s.title}</h3>
+        <p class="col-line">{s.line}</p>
+        <ul class="chips">{s.models.map((m) => <li>{m}</li>)}</ul>
+        <p class="mono dim col-foot">{s.foot}</p>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ─────────────────────────────  INSIDE THE APP  ──── -->
+<section class="sec" id="inside" data-name={sectionNames.inside}>
+  <div class="sec-head row reveal"><h2>Inside the app.</h2><a class="mono link" href={TRY_URL}>Try it yourself ↗</a></div>
+  {inside.map((c, i) => (
+    <article class={`case reveal${i % 2 ? ' flip' : ''}`}>
+      <div class="case-copy">
+        <p class="mono dim">In the app · {c.tag}</p>
+        <h3>{c.title}</h3>
+        <p>{c.text}</p>
+        <ul class="chips">{c.chips.map((m) => <li>{m}</li>)}</ul>
+      </div>
+      <div class="case-pic"><img src={c.src} alt={c.alt} width="2000" height="1250" loading="lazy" decoding="async" /></div>
+    </article>
+  ))}
+</section>
+
+<!-- ─────────────────────────────  FEATURES (spec sheet)  ──── -->
+<section class="sec" id="features" data-name={sectionNames.features}>
+  <div class="sec-head reveal"><h2>The spec sheet.</h2><p>Eight things worth finding on day one. Point at a row, or tap it, for the detail.</p></div>
+  <!-- Rows open on hover with a pointer, on tap or Enter otherwise. Without JS every row is open. -->
+  <div class="spec" id="spec">
+    {features.map((f, i) => (
+      <div class="spec-row reveal">
+        <h3 class="spec-h"><button class="spec-head" type="button" aria-expanded="false" aria-controls={`spec-more-${i}`}>
+          <span class="mono red">{String(i + 1).padStart(2, '0')}</span>
+          <span class="spec-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons[f.icon]} /></span>
+          <span class="spec-title">{f.title}</span>
+          <span class="spec-line">{f.line}</span>
+          <span class="plus"><Fragment set:html={plus} /></span>
+        </button></h3>
+        <div class="spec-body" id={`spec-more-${i}`}><div><ul class="spec-more">{f.more.map((m) => <li>{m}</li>)}</ul></div></div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ─────────────────────────────  PRIVACY  ──── -->
+<section class="sec privacy" id="privacy" data-name={sectionNames.privacy}>
+  <div class="privacy-l reveal">
+    <h2>Look closer<br />at your data.</h2>
+    <p>There is no AnyChat server. Words leave your Mac only for the model you pick, for that message.</p>
+    <p class="zero"><span>0</span><small>B</small></p>
+    <p class="mono dim">to AnyChat servers, ever</p>
+  </div>
+  <div class="ledger reveal" role="table" aria-label="Where your data goes">
+    {privacy.map((r) => (
+      <div class="lg-row" role="row">
+        <span role="rowheader">{r.what}</span><i class="leader" aria-hidden="true"></i>
+        <span role="cell"><b class={r.state === 'o' ? 'amber' : ''}>{r.where}</b><small class="mono">{r.note}</small></span>
+      </div>
+    ))}
+  </div>
+</section>
+
+<!-- ─────────────────────────────  SETAPP  ──── -->
+<!-- AnyChat has no Setapp listing yet, so the three steps are drawn as schematics in the page's own language
+     rather than borrowed screenshots of another app. Swap in real captures once the listing exists. -->
+<section class="sec" id="setapp" data-name={sectionNames.setapp}>
+  <div class="sec-head reveal"><h2>Try Free goes through Setapp.</h2><p>Setapp is the place you get handpicked Mac, iOS and web apps, including MacPaw’s products.</p></div>
+  <ol class="cols3 setapp">
+    <li class="col reveal">
+      <div class="frame sk" aria-hidden="true">
+        <span class="sk-tag mono">setapp.com · sign up</span>
+        <div class="sk-card">
+          <p class="sk-title">Create your account</p>
+          <p class="sk-row"><i></i>Continue with Google</p>
+          <p class="sk-row"><i></i>Continue with Apple</p>
+          <p class="sk-row"><i></i>Continue with email</p>
+          <p class="sk-btn">Continue</p>
+        </div>
+        <span class="sk-dim mono">≈ 1 min</span>
+      </div>
+      <p class="mono"><span class="red">01</span> <span class="rule"></span> 03</p><h3>Create a Setapp account</h3><p class="col-line">That’s where the Try Free button lands. It takes a minute.</p>
+    </li>
+    <li class="col reveal">
+      <div class="frame sk" aria-hidden="true">
+        <span class="sk-tag mono">Setapp.app</span>
+        <div class="sk-win">
+          <div class="sk-bar"><i></i><i></i><i></i></div>
+          <div class="sk-body">
+            <div class="sk-side"><span></span><span></span><span></span><span></span></div>
+            <div class="sk-grid">{Array.from({ length: 8 }, (_, i) => <span class={i === 2 ? 'on' : ''}></span>)}</div>
+          </div>
+        </div>
+        <div class="sk-progress"><span class="mono">installing</span><i><b></b></i></div>
+      </div>
+      <p class="mono"><span class="red">02</span> <span class="rule"></span> 03</p><h3>Install Setapp on your Mac</h3><p class="col-line">One small app that installs and updates everything else.</p>
+    </li>
+    <li class="col reveal">
+      <div class="frame sk" aria-hidden="true">
+        <span class="sk-tag mono">Setapp › AnyChat</span>
+        <div class="sk-app">
+          <img src="/app-icon/AnyChat-512.png" width="64" height="64" alt="" />
+          <div><p class="sk-name">AnyChat</p><p class="sk-by mono">by MacPaw</p></div>
+          <p class="sk-open">Open</p>
+        </div>
+        <p class="sk-coins mono"><i></i>AI coins · same Setapp account</p>
+      </div>
+      <p class="mono"><span class="red">03</span> <span class="rule"></span> 03</p><h3>Open AnyChat</h3><p class="col-line">It’s in your Setapp library, and the same account holds your AI coins.</p>
+    </li>
+  </ol>
+  <p class="foot-note reveal">Already on Setapp? Search for AnyChat in the Setapp app, or open <a href={APP_PAGE_URL} target="_blank" rel="noopener">its Setapp page</a>. <a href="https://setapp.com" target="_blank" rel="noopener">More about Setapp</a>.</p>
+</section>
+
+<!-- ─────────────────────────────  FAQ  ──── -->
+<section class="sec faq" id="faq" data-name={sectionNames.faq}>
+  <h2 class="reveal">Answers before<br />your first question.</h2>
+  <div class="faq-list reveal">
+    {faqs.map((f, i) => (
+      <details class="faq-item">
+        <summary><span class="mono dim">{String(i + 1).padStart(2, '0')}</span>{f.q}<span class="plus"><Fragment set:html={plus} /></span></summary>
+        <p>{f.a}</p>
+      </details>
+    ))}
+  </div>
+</section>
+
+<!-- ─────────────────────────────  YOUR MOVE  ──── -->
+<section class="move" id="move" data-name={sectionNames.move}>
+  <div class="move-stage" aria-hidden="false">
+    <span class="mv-line h t" aria-hidden="true"></span><span class="mv-line h b" aria-hidden="true"></span>
+    <span class="mv-line v l" aria-hidden="true"></span><span class="mv-line v r" aria-hidden="true"></span>
+    <div class="mv-target">
+      <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+      <a class="btn btn-lg" href={TRY_URL}>Try Free <span class="btn-dot"><Fragment set:html={arrow} /></span></a>
+      <span class="mono red mv-dim" id="mv-dim">Button · 168 × 56</span>
+    </div>
+    <p class="hand hand-move" aria-hidden="true"><svg viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M56 6C40 6 22 14 10 30" /><path d="M10 20l0 11 10-2" /></svg>Go on, ask anything.</p>
+  </div>
+  <div class="move-copy reveal">
+    <p class="mono"><span class="red">Your move.</span></p>
+    <h2>Everything above fits in one window.</h2>
+    <p>Press the button, install through Setapp, and ask your first question. Any model you like.</p>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <a class="brand" href="#top"><img src="/app-icon/AnyChat-64.png" width="22" height="22" alt="" />AnyChat</a>
+    <span class="mono dim">© 2026 MacPaw Way Ltd. · Made in Kyiv</span>
+    <nav class="footer-links" aria-label="Legal and help">
+      <a href="https://macpaw.com/legal/policy" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="https://macpaw.com/legal/ai-apps-terms-of-service" target="_blank" rel="noopener">Terms of Service</a>
+      <a href="https://macpawai.zendesk.com/hc/en-us" target="_blank" rel="noopener">Help</a>
+    </nav>
+  </div>
+</footer>
+
+<script is:inline set:html={`window.heroVariants = ${JSON.stringify(heroVariants)};`} />
+<script is:inline src="/main.js"></script>
+</body>
+</html>

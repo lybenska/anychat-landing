@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AnyChat landing — three directions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,300..700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+*{box-sizing:border-box} body{margin:0;background:#2a2a2e;color:#fff;font:14px/1.5 Inter,system-ui,sans-serif}
+.lab{padding:18px 24px;border-bottom:1px solid #444;display:flex;gap:14px;align-items:baseline}
+.lab b{font-size:16px}.lab span{color:#aaa}
+.dir{position:relative}
+.frame{width:1280px;height:760px;margin:0 auto;overflow:hidden;position:relative}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 48px;font-weight:600}
+.nav nav{display:flex;gap:24px;font-weight:500}
+.icon{width:24px;height:24px;border-radius:6px;display:inline-block;vertical-align:middle;margin-right:8px;background:url(/app-icon/AnyChat-64.png) center/cover}
+
+/* ───── A · Paper: light editorial, serif, dark windows on cream ───── */
+.a{background:#F4F1EA;color:#15150F;font-family:Inter,sans-serif}
+.a .nav{border-bottom:1px solid #DAD5C8;color:#15150F}
+.a .nav nav a{color:#6A665C}
+.a .cta{background:#15150F;color:#F4F1EA;border-radius:4px;padding:10px 18px;font-weight:500}
+.a .hero{display:grid;grid-template-columns:1.1fr 1fr;gap:48px;padding:72px 48px 0;align-items:end}
+.a h1{font-family:Fraunces,serif;font-weight:300;font-size:84px;line-height:.98;letter-spacing:-.02em;margin:0}
+.a h1 i{font-style:italic;font-weight:400}
+.a .sub{max-width:44ch;font-size:19px;color:#4F4B42;margin:28px 0 32px}
+.a .tags{display:flex;gap:8px;flex-wrap:wrap;font:12px/1 'JetBrains Mono',monospace}
+.a .tags span{padding:7px 10px;border:1px solid #CFC9BA;border-radius:999px;color:#4F4B42}
+.a .tags span.on{background:#15150F;color:#F4F1EA;border-color:#15150F}
+.a .win{background:#0B0B0D;border-radius:12px 12px 0 0;box-shadow:0 40px 80px -30px rgba(0,0,0,.5);padding:14px;color:#ddd;font-size:12px;min-height:420px}
+.a .bar{display:flex;gap:6px;margin-bottom:14px}.a .bar i{width:10px;height:10px;border-radius:50%;background:#3a3a40}
+.a .msg{max-width:80%;padding:9px 12px;border-radius:14px;background:#1b1b1f;margin:8px 0}
+.a .msg.u{background:#F5009E;color:#fff;margin-left:auto}
+.a .rule{display:flex;gap:10px;align-items:center;font:11px 'JetBrains Mono',monospace;color:#8E8E93;margin:14px 0 6px}
+.a .rule:before,.a .rule:after{content:'';flex:1;height:1px;background:#2a2a30}
+.a .cols{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.a .col{border:1px solid #2a2a30;border-radius:10px;padding:10px;min-height:120px}
+.a .col b{display:block;font:11px 'JetBrains Mono',monospace;color:#5EA9F0;margin-bottom:6px}.a .col.c b{color:#FF2DAE}
+.a .strip{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;padding:16px 48px;border-top:1px solid #DAD5C8;font:12px 'JetBrains Mono',monospace;color:#6A665C;background:#F4F1EA}
+
+/* ───── B · Switchboard: bento grid, one blue, mono labels, grid paper ───── */
+.b{background:#0E1116;color:#E8ECF1;font-family:'Space Grotesk',sans-serif;background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);background-size:40px 40px}
+.b .nav{color:#E8ECF1}.b .nav nav a{color:#8A94A3}
+.b .cta{background:#3B82F6;color:#fff;border-radius:8px;padding:10px 18px;font-weight:600}
+.b .grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:118px;gap:12px;padding:32px 48px 0}
+.b .cell{background:#161B23;border:1px solid #232A35;border-radius:16px;padding:22px;position:relative;overflow:hidden}
+.b .lbl{font:11px/1 'JetBrains Mono',monospace;letter-spacing:.08em;text-transform:uppercase;color:#8A94A3}
+.b .c1{grid-column:span 7;grid-row:span 3}
+.b h1{font-size:64px;line-height:1;letter-spacing:-.03em;font-weight:600;margin:24px 0 16px}
+.b h1 em{font-style:normal;color:#3B82F6}
+.b .sub{color:#8A94A3;font-size:18px;max-width:40ch}
+.b .c2{grid-column:span 5;grid-row:span 2}
+.b .c3{grid-column:span 5;grid-row:span 1;display:flex;align-items:center;gap:12px}
+.b .c4,.b .c5,.b .c6{grid-column:span 4;grid-row:span 2}
+.b .big{font-size:56px;font-weight:600;letter-spacing:-.03em;line-height:1;margin-top:12px}
+.b .track{position:absolute;left:22px;right:22px;bottom:22px;height:36px;border-radius:999px;background:#0E1116;border:1px solid #232A35;display:flex;align-items:center;padding:4px;gap:4px}
+.b .track span{flex:1;text-align:center;font:12px 'JetBrains Mono',monospace;color:#8A94A3;padding:6px;border-radius:999px}
+.b .track span.on{background:#3B82F6;color:#fff}
+.b .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.b .chips span{font:12px 'JetBrains Mono',monospace;padding:6px 9px;border-radius:6px;background:#0E1116;border:1px solid #232A35}
+.b .dot{width:8px;height:8px;border-radius:50%;background:#22C55E;box-shadow:0 0 0 4px rgba(34,197,94,.15)}
+
+/* ───── C · Transcript: the page is a conversation; pastel on light gray ───── */
+.c{background:#EEF0F4;color:#111;font-family:Inter,sans-serif}
+.c .nav{color:#111}.c .nav nav a{color:#666}
+.c .cta{background:#111;color:#fff;border-radius:999px;padding:10px 18px;font-weight:600}
+.c .thread{max-width:860px;margin:40px auto 0;display:flex;flex-direction:column;gap:18px}
+.c .u{align-self:flex-end;max-width:70%;background:#111;color:#fff;padding:16px 22px;border-radius:26px 26px 6px 26px;font-size:22px;font-weight:500;letter-spacing:-.01em}
+.c .ai{align-self:flex-start;max-width:86%;background:#fff;padding:22px 26px;border-radius:26px 26px 26px 6px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.c .who{display:flex;align-items:center;gap:8px;font-size:12px;color:#666;margin-bottom:10px}
+.c .who b{font-weight:600;color:#111}.c .who i{width:18px;height:18px;border-radius:5px;display:inline-block}
+.c h1{font-size:54px;line-height:1.02;letter-spacing:-.03em;font-weight:600;margin:0 0 12px}
+.c .sub{font-size:19px;color:#555;max-width:46ch}
+.c .pills{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}.c .pills span{padding:8px 14px;border-radius:999px;font-size:14px;font-weight:500}
+.c .p1{background:#FFE3F3;color:#B4007A}.c .p2{background:#FFF1D6;color:#8A5A00}.c .p3{background:#DDEBFF;color:#1F5BB5}
+.c .two{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+.c .two div{background:#F6F7F9;border-radius:16px;padding:14px;font-size:14px;color:#333}
+.c .two b{display:block;font-size:12px;margin-bottom:6px}
+.c .typing{align-self:flex-start;background:#fff;padding:12px 18px;border-radius:26px;display:flex;gap:5px}
+.c .typing i{width:7px;height:7px;border-radius:50%;background:#bbb}
+</style></head><body>
+
+<div class="lab"><b>A · Paper</b><span>light editorial: cream, serif display, mono labels, the app's dark window as the only dark object on the page</span></div>
+<div class="dir a"><div class="frame">
+  <div class="nav"><span><span class="icon"></span>AnyChat</span><nav><a>How it works</a><a>Models</a><a>Features</a><a>Privacy</a><a>Setapp</a><a>FAQ</a></nav><span class="cta">Try Free</span></div>
+  <div class="hero">
+    <div>
+      <h1>Every model.<br><i>One chat.</i></h1>
+      <p class="sub">Frontier models included with Setapp, your own API keys, or models that run on your Mac. Switch mid-conversation without losing a word.</p>
+      <div class="tags"><span class="on">Setapp AI+</span><span>OpenAI</span><span>Anthropic</span><span>Gemini</span><span>OpenRouter</span><span>Ollama</span><span>Apple Intelligence</span><span>MLX</span></div>
+    </div>
+    <div class="win"><div class="bar"><i></i><i></i><i></i></div>
+      <div class="msg u">Rewrite this in a friendlier tone</div>
+      <div class="msg">Hey team, quick heads-up: the report slipped a day. Could you send yours by Friday? Thanks for bearing with me.</div>
+      <div class="rule">same question, two models</div>
+      <div class="cols"><div class="col"><b>on your Mac · llama-3.2-3b</b>Hi all, the report is a day late. Please send it by Friday. Thank you.</div><div class="col c"><b>cloud · claude-sonnet-4-5</b>Hey team, quick heads-up: the report slipped a day. Could you send yours by Friday?</div></div>
+    </div>
+  </div>
+  <div class="strip"><span>01 — Ask</span><span>02 — Switch or compare</span><span>03 — Go further</span><span>Made by MacPaw · Kyiv</span></div>
+</div></div>
+
+<div class="lab"><b>B · Switchboard</b><span>bento grid on graph paper, one electric blue, mono captions; every section is a set of tiles, the model switch is a literal track</span></div>
+<div class="dir b"><div class="frame">
+  <div class="nav"><span><span class="icon"></span>AnyChat</span><nav><a>How it works</a><a>Models</a><a>Features</a><a>Privacy</a><a>Setapp</a><a>FAQ</a></nav><span class="cta">Try Free</span></div>
+  <div class="grid">
+    <div class="cell c1"><span class="lbl">AI chat for Mac · by MacPaw</span><h1>Every model.<br><em>One chat.</em></h1><p class="sub">Setapp AI, your own keys, or models on your Mac. One transcript. Switch any time.</p>
+      <div class="track"><span>Setapp AI+</span><span class="on">claude-sonnet-4-5</span><span>gpt-5</span><span>llama-3.2 · local</span><span>Apple</span></div></div>
+    <div class="cell c2"><span class="lbl">Same question, two models</span><div class="chips"><span>on your Mac</span><span>cloud</span></div><p class="sub" style="font-size:15px;margin-top:14px">Ask another model the same thing. Keep the answer you prefer.</p></div>
+    <div class="cell c3"><span class="dot"></span><span class="lbl" style="color:#E8ECF1">Conversations stay on your Mac · no AnyChat server</span></div>
+    <div class="cell c4"><span class="lbl">Models through Setapp AI</span><div class="big">100+</div></div>
+    <div class="cell c5"><span class="lbl">Places a model can run</span><div class="big">3</div><div class="chips"><span>Setapp</span><span>your key</span><span>your Mac</span></div></div>
+    <div class="cell c6"><span class="lbl">Built-in personas</span><div class="big">7</div><div class="chips"><span>Code Reviewer</span><span>Socratic Tutor</span></div></div>
+  </div>
+</div></div>
+
+<div class="lab"><b>C · Transcript</b><span>the whole page is a conversation: every section heading is your question, the content is the reply, with model badges; pastel on light gray</span></div>
+<div class="dir c"><div class="frame">
+  <div class="nav"><span><span class="icon"></span>AnyChat</span><nav><a>How it works</a><a>Models</a><a>Features</a><a>Privacy</a><a>Setapp</a><a>FAQ</a></nav><span class="cta">Try Free</span></div>
+  <div class="thread">
+    <div class="u">What is AnyChat?</div>
+    <div class="ai"><div class="who"><i style="background:#111"></i><b>AnyChat</b> · by MacPaw</div>
+      <h1>Every model you use,<br>in one Mac app.</h1>
+      <p class="sub">Frontier models included with Setapp, your own API keys, or models that run on your Mac. Switch mid-conversation without losing a word.</p>
+      <div class="pills"><span class="p1">Setapp AI+ · included</span><span class="p2">Your own key</span><span class="p3">On your Mac · offline</span></div>
+    </div>
+    <div class="u">Which answer is better?</div>
+    <div class="ai"><div class="who"><i style="background:#1F5BB5"></i><b>Same question, two models</b></div>
+      <div class="two"><div><b>🖥 On your Mac · free · offline</b>Hi all, the report is a day late. Please send it by Friday.</div><div><b>☁️ Cloud · included with Setapp</b>Hey team, quick heads-up: the report slipped a day. Could you send yours by Friday?</div></div>
+    </div>
+    <div class="typing"><i></i><i></i><i></i></div>
+  </div>
+</div></div>
+</body></html>
